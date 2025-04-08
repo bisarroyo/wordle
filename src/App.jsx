@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { words } from './utils/data'
 
 import './App.css'
 import Line from './components/Line'
@@ -9,7 +10,8 @@ function App() {
   const [wordle, setWordle] = useState(new Array(6).fill(null))
   const [isGameOver, setIsGameOver] = useState(false)
   useEffect(() => {
-    setSolution('hello')
+    const randomWord = words[Math.floor(Math.random() * (words.length - 1))]
+    setSolution(randomWord)
   }, [])
 
   useEffect(() => {
@@ -62,7 +64,7 @@ function App() {
           />
         )
       })}
-      {isGameOver && 'Game Over'}
+      <p>{isGameOver && 'Game Over'}</p>
     </main>
   )
 }
