@@ -41,9 +41,7 @@ function Line({ currentTyping, solution, isLastWord }) {
         }
 
         return (
-          <span key={index} className={className}>
-            {char}
-          </span>
+          <input type='text' key={index} className={className} value={char} />
         )
       })}
     </div>

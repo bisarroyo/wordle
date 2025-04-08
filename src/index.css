@@ -39,6 +39,10 @@ h1 {
 p {
   text-align: center;
 }
+input {
+  font-size: 2rem;
+  text-transform: uppercase;
+}
 
 button:focus,
 button:focus-visible {

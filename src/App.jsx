@@ -42,7 +42,7 @@ function App() {
         return
       }
 
-      setCurrent((prevState) => (prevState += key))
+      setCurrent((prevState) => (prevState += key.toLowerCase()))
     }
     window.addEventListener('keydown', onKeyUp)
 
