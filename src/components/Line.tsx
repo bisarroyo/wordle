@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 function Line({ currentTyping, solution, isLastWord }) {
   const letters = new Array(5).fill('')
@@ -41,7 +41,9 @@ function Line({ currentTyping, solution, isLastWord }) {
         }
 
         return (
-          <input type='text' key={index} className={className} value={char} />
+          <span key={index} className={className}>
+            {char}
+          </span>
         )
       })}
     </div>
