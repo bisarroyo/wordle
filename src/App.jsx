@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { words } from './utils/data'
 
 import './App.css'
 import Line from './components/Line'
+import Keyboard from './components/Keyboard'
+import Options from './components/Options'
 
 function App() {
   const [solution, setSolution] = useState('hello')
@@ -14,42 +16,85 @@ function App() {
     setSolution(randomWord)
   }, [])
 
-  useEffect(() => {
-    function onKeyUp(event) {
-      if (isGameOver) {
-        return
+  const handleGame = useCallback(
+    (key) => {
+      if (isGameOver) return
+
+      if (key === 'Next') {
+        setWordle(new Array(6).fill(null))
+        setCurrent('')
+        const randomWord = words[Math.floor(Math.random() * (words.length - 1))]
+        setSolution(randomWord)
       }
-      const { key } = event
-      if (key == 'Enter') {
-        if (current.length !== 5) {
-          return
-        }
+
+      if (key === 'Enter') {
+        if (current.length !== 5) return
+
         const isCorrect = solution === current
         if (isCorrect) {
           setIsGameOver(true)
         }
+
         const newWordle = [...wordle]
         const actualWordleIndex = wordle.findIndex((val) => val == null)
         newWordle[actualWordleIndex] = current
         setWordle(newWordle)
         setCurrent('')
+        return
       }
-      if (key == 'Backspace') {
+
+      if (key === 'Backspace') {
         setCurrent((prevState) => prevState.slice(0, -1))
         return
       }
-      if (current.length >= 5) {
+
+      if (current.length >= 5 || key.length !== 1 || !/^[a-zA-Z]$/.test(key)) {
         return
       }
 
-      setCurrent((prevState) => (prevState += key.toLowerCase()))
-    }
-    window.addEventListener('keydown', onKeyUp)
+      setCurrent((prevState) => prevState + key.toLowerCase())
+    },
+    [current, solution, wordle, isGameOver]
+  )
 
+  useEffect(() => {
+    const onKeyUp = (event) => {
+      handleGame(event.key)
+    }
+
+    window.addEventListener('keydown', onKeyUp)
     return () => {
       window.removeEventListener('keydown', onKeyUp)
     }
-  }, [current, solution, wordle, isGameOver])
+  }, [handleGame])
+
+  const getKeyStatuses = (wordle, solution) => {
+    const status = {}
+
+    wordle.forEach((word) => {
+      if (!word) return
+      for (let i = 0; i < word.length; i++) {
+        const letter = word[i]
+        if (solution[i] === letter) {
+          status[letter.toUpperCase()] = 'correct'
+        } else if (solution.includes(letter)) {
+          // Evita sobreescribir correct con close
+          if (status[letter.toUpperCase()] !== 'correct') {
+            status[letter.toUpperCase()] = 'close'
+          }
+        } else {
+          if (!status[letter.toUpperCase()]) {
+            status[letter.toUpperCase()] = 'incorrect'
+          }
+        }
+      }
+    })
+
+    return status
+  }
+
+  const keyStatuses = getKeyStatuses(wordle, solution)
+
   return (
     <main>
       <h1>Wordle</h1>
@@ -64,6 +109,8 @@ function App() {
           />
         )
       })}
+      <Keyboard onKeyPressed={handleGame} keysPressed={keyStatuses} />
+      <Options onKeyPressed={handleGame} />
       <p>{isGameOver && 'Game Over'}</p>
     </main>
   )
