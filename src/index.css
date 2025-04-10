@@ -33,8 +33,9 @@ body {
 
 h1 {
   font-size: 3.2em;
-  line-height: 1.1;
+  line-height: 1;
   text-align: center;
+  margin: 0 0 20px 0;
 }
 p {
   text-align: center;
@@ -64,6 +65,8 @@ button:focus-visible {
 
 .wordle-container {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
   margin-top: 10px;
   .word {
@@ -73,20 +76,81 @@ button:focus-visible {
     width: 40px;
     display: grid;
     place-items: center;
+    font-weight: bold;
   }
 }
 
 .correct {
-  background-color: green;
+  background-color: #05a500;
   color: white;
 }
 
 .close {
-  background-color: orange;
+  background-color: #d3ab2a;
   color: white;
 }
 
 .incorrect {
-  background-color: gray;
+  background-color: #313131;
   color: white;
+}
+
+.keyboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 3px;
+}
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+.key {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  background-color: #0c508b;
+  font-weight: bold;
+
+  &:focus {
+    outline: none;
+  }
+  &.close {
+    background-color: #d3ab2a;
+  }
+  &.incorrect {
+    background-color: #313131;
+  }
+  &.correct {
+    background-color: #05a500;
+  }
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  .option {
+    padding: auto 200px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    background-color: #0c508b;
+    font-weight: bold;
+    height: 40px;
+    text-transform: uppercase;
+  }
 }
