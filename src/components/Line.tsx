@@ -42,7 +42,7 @@ function Line({ currentTyping, solution, isLastWord }) {
 
         return (
           <span key={index} className={className}>
-            {char}
+            {char.toUpperCase()}
           </span>
         )
       })}
